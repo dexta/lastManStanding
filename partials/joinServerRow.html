@@ -1,0 +1,10 @@
+<div class="col-md-6">
+  <div>{{gameServerRunning | json}}</div>
+    
+  <ul class="list-group">
+    <li class="list-group-item" ng-repeat="(name, obj) in gameServerRunning">
+      <button type="button" class="btn btn-default" ng-click="joinServer(name)">{{name}}</button>
+       User: <span ng-repeat="player in obj.player">{{player}} </span>
+    </li>
+  </ul>
+</div>

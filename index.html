@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="de" ng-app="movieApp">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Last Man Standing</title>
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="css/bootstrap.css">
+
+  </head>
+  <body ng-controller="singleController">
+<style type="text/css">
+body {
+  padding-top: 64px;
+}
+</style>    
+<header class="navbar navbar-default navbar-fixed-top navbar-inner" ng-show="nav.headerShow">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" ng-show="nav.btnHamburger">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand visible-xs" href="#">{{searchTitle}}</a>
+    </div>
+    <nav class="hidden-xs">
+      <ul class="nav navbar-nav">
+
+        <a href="#" role="button" class="navbar-brand">{{searchTitle}}</a>
+
+
+        <div class="col-sm-3 col-md-3">
+          <form class="navbar-form  pull-left" role="search" ng-show="nav.searchBar">
+            <div class="input-group">
+              <input type="text" class="form-control" placeholder="Search" name="q" size="100px" ng-model="headSearch">
+              <div class="input-group-btn">
+                <button class="btn btn-default" type="button" ng-click="byName(headSearch)">
+                  <i class="glyphicon glyphicon-search"></i>
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
+
+        <div class="col-sm-3 col-md-3">
+          <div class="input-group">
+            <form class="navbar-form">
+              <button class="btn btn-success" ng-show="nav.playerBar" type="button" ng-if="gameServerAvailable" ng-click="showJoinServer()">
+                <span class="glyphicon glyphicon-log-in" aria-hidden="true"></span>
+              </button>
+              <button class="btn btn-danger" ng-show="nav.playerBar" type="button" ng-if="!gameServerAvailable" ng-click="seekServer()">
+                <span class="glyphicon glyphicon-globe" aria-hidden="true"></span>
+              </button>
+
+              <button class="btn btn-default" ng-show="nav.serverBar" type="button" ng-if="!gameServerJoined" ng-click="showSettings()">
+                <span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
+              </button>
+            </form>
+          </div>
+        </div>
+
+      </ul>
+
+    </nav>
+  </div>
+</header>
+<style type="text/css">
+
+</style>
+
+<div class="container">
+
+
+  <div ng-view></div>
+
+</div>
+    
+
+<script src="/socket.io/socket.io.js"></script>
+<script src="js/angular.js"></script>
+<script src="js/angular-route.js"></script>
+<script src="js/ui-bootstrap.js"></script>
+
+<script src="js/app.js"></script>
+<script src="js/app/route.js"></script>
+<script src="js/app/filter.js"></script>
+<script src="js/app/directive.js"></script>
+<script src="js/app/service.js"></script>
+<script src="js/app/controller.js"></script>
+
+  </body>
+</html>

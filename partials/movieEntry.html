@@ -1,0 +1,17 @@
+        <div class="panel-heading">
+          <div class="panel-title pull-left"> {{movie.title}}</div>
+          <div class="btn-group pull-right" role="group" aria-label="">
+            <button type="button" class="btn btn-warning" ng-click="readMore($event)">
+              <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+            </button>
+            <button type="button" class="btn btn-danger"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>
+            <button type="button" class="btn btn-success" ng-click="setCalled(movie)">
+              <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
+            </button>
+          </div>
+          <div class="clearfix"></div>
+        </div>
+        <div class="panel-body" ng-show="moviedetail">
+          Rolle: {{movie.character}} {{movie.job}}<br/>
+          {{movie.release_date}} {{movie.original_title}}
+        </div>

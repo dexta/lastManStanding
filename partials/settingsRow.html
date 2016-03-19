@@ -1,0 +1,50 @@
+<div class="col-md-6">
+<form ng-submit="startServer(formServerStart)" class="form-horizontal">
+  <fieldset ng-show="!gameServerStarted">
+  <!-- Form Name -->
+  <legend>Start Server</legend>
+  <!-- Text input-->
+  <div class="form-group">
+    <label class="col-md-4 control-label" for="textinput">Server Name</label>  
+    <div class="col-md-6">
+    <input id="textinput" name="textinput" 
+            type="text" placeholder="give a uniq name" 
+            class="form-control input-md" required=""
+            ng-model="formServer.name">
+    <span class="help-block">the name give the player an idea of the right server for the next game </span>  
+    </div>
+  </div>
+
+  <!-- Text input-->
+  <div class="form-group">
+    <label class="col-md-4 control-label" for="textinput">Password</label>  
+    <div class="col-md-6">
+    <input id="textinput" name="textinput" type="text" 
+            placeholder="to join the game" class="form-control input-md"
+            ng-model="formServer.pass">
+    <span class="help-block">some extra safety to hold the crowd private</span>  
+    </div>
+  </div>
+
+  <!-- Button -->
+  <div class="form-group">
+    <label class="col-md-4 control-label" for="submitStartServer"></label>
+    <div class="col-md-6">
+      <button type="submit" name="submitStartServer" class="btn btn-primary">Start</button>
+    </div>
+  </div>
+  </fieldset>
+</form>
+</div>
+
+<div class="col-md-6">
+  <fieldset ng-show="gameServerStarted">
+  <legend>Player Joined{{name}}</legend>
+    <div class="alert alert-success" role="alert">Server: {{gameServerName}} Pass: {{gameServerPass||'none'}}</div>
+      <ul>
+        <li ng-repeat="client in gameClients">
+          {{client.name}}
+        </li>
+      </ul>
+    </div>
+</fieldset>
