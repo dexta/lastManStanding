@@ -74,19 +74,31 @@ body {
 
 <div class="container">
 
+  <div class="row" ng-if="showSearchResulut" ng-include src="'partials/searchResulutRow.html'">
 
-  <div ng-view></div>
+  </div>  
+
+
+  <div class="row" ng-if="showJoinServerRow" ng-include src="'partials/joinServerRow.html'">
+    <!--  join a running server row
+          should be stay simple over time -->
+  </div>  
+
+  <div class="row" ng-if="showSettingsRow" ng-include src="'partials/settingsRow.html'">
+    <!--  show the server start row for settings of a game
+          pretty simple and a long to do list -->
+  </div>    
 
 </div>
     
 
 <script src="/socket.io/socket.io.js"></script>
 <script src="js/angular.js"></script>
-<script src="js/angular-route.js"></script>
+
 <script src="js/ui-bootstrap.js"></script>
 
 <script src="js/app.js"></script>
-<script src="js/app/route.js"></script>
+
 <script src="js/app/filter.js"></script>
 <script src="js/app/directive.js"></script>
 <script src="js/app/service.js"></script>

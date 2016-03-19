@@ -4,6 +4,7 @@ var debug;
 movieApp.controller('singleController', function($scope, $location, getMovieData, socket){
   $scope.headSearch = "";
   $scope.searchTitle = "Last Man Standing";
+  $scope.showSearchResulut = false;
   $scope.movieList = [];
   $scope.movieCalled = [];
   $scope.sortValues = [
@@ -17,8 +18,8 @@ movieApp.controller('singleController', function($scope, $location, getMovieData
     headerShow: true,
     btnHamburger: false,
     searchBar: true,
-    playerBar: false,
-    serverBar: false    
+    playerBar: true,
+    serverBar: true    
   }
 
   console.log("options "+JSON.stringify($location.search()));
@@ -67,7 +68,7 @@ movieApp.controller('singleController', function($scope, $location, getMovieData
 
   var debPlayer = ["alice","bob","clara","dexter","elouise"];
 
-  $scope.showSearchResulut = false;
+
 
   $scope.gamePlayerName = '';
   $scope.gameServerRunning = {};
@@ -138,7 +139,7 @@ $scope.formServer.pass = "geheim";
 
   socket.on('updatePlayer', function(playerName){
     $scope.gameClients.push({name:playerName});
-    $scope.$evalAsync(modalService);
+    $scope.$evalAsync($scope.gameClients);
     console.log("update clients player "+playerName);
   });
 
