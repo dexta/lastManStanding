@@ -46,23 +46,6 @@ body {
           </form>
         </div>
 
-        <div class="col-sm-3 col-md-3">
-          <div class="input-group">
-            <form class="navbar-form">
-              <button class="btn btn-success" ng-show="nav.playerBar" type="button" ng-if="gameServerAvailable" ng-click="showJoinServer()">
-                <span class="glyphicon glyphicon-log-in" aria-hidden="true"></span>
-              </button>
-              <button class="btn btn-danger" ng-show="nav.playerBar" type="button" ng-if="!gameServerAvailable" ng-click="seekServer()">
-                <span class="glyphicon glyphicon-globe" aria-hidden="true"></span>
-              </button>
-
-              <button class="btn btn-default" ng-show="nav.serverBar" type="button" ng-if="!gameServerJoined" ng-click="showSettings()">
-                <span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
-              </button>
-            </form>
-          </div>
-        </div>
-
       </ul>
 
     </nav>
@@ -78,16 +61,6 @@ body {
 
   </div>  
 
-
-  <div class="row" ng-if="showJoinServerRow" ng-include src="'partials/joinServerRow.html'">
-    <!--  join a running server row
-          should be stay simple over time -->
-  </div>  
-
-  <div class="row" ng-if="showSettingsRow" ng-include src="'partials/settingsRow.html'">
-    <!--  show the server start row for settings of a game
-          pretty simple and a long to do list -->
-  </div>    
 
 </div>
     
