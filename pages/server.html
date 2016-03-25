@@ -22,12 +22,8 @@
   </div>
   <div class="col-md-2 col-xs-4">
     <h1>{{gamePlayerTime}}</h1>
-
-
   </div>
-    <div class="col-md-2 col-xs-4" ng-repeat="player in gamePlayerNameList">
-    
-    
+  <div class="col-md-2 col-xs-4" ng-repeat="player in gamePlayerNameList">
     <div class="panel panel-default" ng-if="gameActivPlayer != player.name">
       <div class="panel-heading">{{player.name}}</div>
       <div class="panel-body">
@@ -41,7 +37,6 @@
         Score: {{player.score}}
       </div>
     </div>
-
   </div>
 </div>
 

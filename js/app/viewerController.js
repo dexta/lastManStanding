@@ -49,7 +49,7 @@ movieApp.controller('viewerController', function($scope, $location, getMovieData
 
   socket.on('getGameData', function(gameData){
     console.log("getGameData "+JSON.stringify(gameData));
-    $scope.$apply(function(){
+    $scope.$apply(function(){    
       $scope.searchTitle = gameData.search;
       $scope.calledMovies = gameData.called;
       $scope.gamePlayerTime = gameData.timer;
@@ -57,8 +57,6 @@ movieApp.controller('viewerController', function($scope, $location, getMovieData
       $scope.gamePlayerNameList = gameData.nameList;
     });
   });
-
-
 
   socket.on('welcomeBackPlayer',function(playerData){
     $scope.gameServerStarted = true;

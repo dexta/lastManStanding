@@ -2,7 +2,11 @@ movieApp.controller('playerController', function($scope, $location, getMovieData
 
   $scope.searchTitle = "Last Man Standing";
   $scope.calledMovies = [];
-
+  $scope.gamePlayerTime = 13;
+  $scope.gamePlayerName = "yourself";
+  $scope.gameActivPlayer = "some other";
+  $scope.gamePlayerScore = 3;
+  $scope.headColorActive = "danger";
 
 // debug mockup
       $scope.searchTitle = "Bruce Willis";
@@ -65,33 +69,28 @@ movieApp.controller('playerController', function($scope, $location, getMovieData
       server: playerPara.server
     };
     socket.emit('joinServer',newPlayer);
+    $scope.gamePlayerName = playerPara.name;
     console.log("new Player "+JSON.stringify(newPlayer) );
     serverConnect = true;
   });
 
-  socket.on('welcomePlayer',function(name){
-    console.log("this name "+playerPara.name+" server means "+name);
-  });
-
   socket.on('getGameData', function(gameData){
-    // $scope.searchTitle = gameData.name;
-    // $scope.calledMovies = gameData.called;
     console.log("getGameData "+JSON.stringify(gameData));
-
     $scope.$apply(function(){
-      $scope.searchTitle = gameData.name;
+      $scope.headColorActive = ($scope.gamePlayerName===gameData.player)? "danger" : "default";
+      for(var n in gameData.nameList) {
+        if($scope.gamePlayerName===gameData.nameList[n].name) {
+          $scope.gamePlayerScore = gameData.nameList[n].score;
+          break;
+        }
+      }
+      $scope.searchTitle = gameData.search;
       $scope.calledMovies = gameData.called;
+      $scope.gamePlayerTime = gameData.timer;
+      $scope.gameActivPlayer = gameData.player;
+      $scope.gamePlayerNameList = gameData.nameList;
     });
-
   });
-
-
-
-  socket.on('welcomeBackPlayer',function(playerData){
-    $scope.gameServerStarted = true;
-    $scope.gameServerName = serverData.name;
-    $scope.gameServerPass = serverData.pass;
-  });  
 
   socket.on("serverError", function(msgObj) {
     console.log("error from:"+msgObj.msg+"\nobj:"+JSON.stringify(msgObj.obj));

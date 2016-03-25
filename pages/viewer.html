@@ -1,10 +1,9 @@
 <div class="row">
   <div class="col-md-2 col-xs-4">
-    
     <div class="panel panel-default">
-      <div class="panel-heading">{{searchTitle}}</div>
-      <div class="panel-body">
-        <h3>{{gamePlayerTime}}</h3>
+      <div class="panel-heading text-center">{{searchTitle}}</div>
+      <div class="panel-body bigNumber">
+        {{gamePlayerTime}}
       </div>
     </div>
 
@@ -13,14 +12,14 @@
     
     <div class="panel panel-default" ng-if="gameActivPlayer != player.name">
       <div class="panel-heading">{{player.name}}</div>
-      <div class="panel-body">
+      <div class="panel-body bigNumber">
         Score: {{player.score}}
       </div>
     </div>
 
     <div class="panel panel-danger" ng-if="gameActivPlayer === player.name">
       <div class="panel-heading">{{player.name}}</div>
-      <div class="panel-body">
+      <div class="panel-body bigNumber">
         Score: {{player.score}}
       </div>
     </div>
@@ -35,9 +34,7 @@
         <div class="panel-title pull-left"> {{movie.title}}</div>
         <div class="clearfix"></div>
       </div>
-      <div class="panel-body" ng-show="moviedetail">
-        Rolle: {{movie.character}} {{movie.job}}<br/>
-        {{movie.release_date}} {{movie.original_title}}
+      <div class="panel-body" style="display:none;">
       </div>
     </div>
   </div>

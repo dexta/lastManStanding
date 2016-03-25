@@ -218,8 +218,6 @@ movieApp.controller('serverController', function($scope, $location, $interval, g
     socket.emit('gameServerAction',gbAction);
   };
 
-
-
   socket.on('welcomeBackServer',function(serverData){
     $scope.gameServerStarted = true;
     $scope.gameServerName = serverData.name;
