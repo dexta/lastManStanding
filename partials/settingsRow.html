@@ -1,50 +1,69 @@
-<div class="col-md-6">
-<form ng-submit="startServer(formServerStart)" class="form-horizontal">
-  <fieldset ng-show="!gameServerStarted">
-  <!-- Form Name -->
-  <legend>Start Server</legend>
-  <!-- Text input-->
-  <div class="form-group">
-    <label class="col-md-4 control-label" for="textinput">Server Name</label>  
-    <div class="col-md-6">
-    <input id="textinput" name="textinput" 
-            type="text" placeholder="give a uniq name" 
-            class="form-control input-md" required=""
-            ng-model="formServer.name">
-    <span class="help-block">the name give the player an idea of the right server for the next game </span>  
-    </div>
+<div class="col-md-12">
+  <table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Status</th>
+            <th>Name</th>
+            <th>URL</th>
+            <th>Role</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody ng-repeat="player in userList">
+      <tr align="center">
+        <td>
+          <button type="button" ng-if="player.status==='offline'" class="btn btn-danger">
+            <span class="glyphicon glyphicon-record" aria-hidden="true"></span>
+          </button>
+          <button type="button" ng-if="player.status==='online'" class="btn btn-success">
+            <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
+          </button>          
+        </td>
+        <td>{{player.name}}</td>
+        <td>
+          <div class="input-group">
+            <input type="text" class="form-control" size="80%" disabled value="{{player.url}}">
+            <span class="input-group-btn">
+                <a class="btn btn-info" href="{{player.url}}" target="_{{player.name}}">
+                  <span class="glyphicon glyphicon-new-window" aria-hidden="true"></span>
+                </a>
+            </span>
+          </div>
+        </td>
+        <td>
+          <button type="button" ng-if="player.role==='player'" class="btn btn-default">
+            <span class="glyphicon glyphicon-bullhorn" aria-hidden="true"></span>
+          </button>
+          <button type="button" ng-if="player.role==='viewer'" class="btn btn-warning">
+            <span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>
+          </button>           
+        </td>
+        <td>
+          <button type="button" class="btn btn-danger">
+            <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+          </button>          
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <div class="col-md-3">
+    <button type="button" class="btn btn-warning pull-left" ng-hide="gameServerStarted" ng-click="startServer()">Start Server</button>
+    <button type="button" class="btn btn-danger pull-left" ng-show="gameServerStarted" ng-click="stopServer()">Stop Server</button>
   </div>
-
-  <!-- Text input-->
-  <div class="form-group">
-    <label class="col-md-4 control-label" for="textinput">Password</label>  
-    <div class="col-md-6">
-    <input id="textinput" name="textinput" type="text" 
-            placeholder="to join the game" class="form-control input-md"
-            ng-model="formServer.pass">
-    <span class="help-block">some extra safety to hold the crowd private</span>  
-    </div>
+  <div class="col-md-3">
+    <button type="button" class="btn btn-info pull-right" ng-click="addViewer()">add Viewer</button>
   </div>
-
-  <!-- Button -->
-  <div class="form-group">
-    <label class="col-md-4 control-label" for="submitStartServer"></label>
-    <div class="col-md-6">
-      <button type="submit" name="submitStartServer" class="btn btn-primary">Start</button>
+  <div class="col-md-3 pull-right">
+    <div class="input-group">
+      <input type="text" class="form-control" placeholder="name" ng-model="newPlayerName">
+      <span class="input-group-btn">
+        <button type="button" class="btn btn-success" ng-click="addPlayer(newPlayerName);newPlayerName='';">add Player</button>
+      </span>
     </div>
-  </div>
-  </fieldset>
-</form>
+  </div>  
 </div>
-
-<div class="col-md-6">
-  <fieldset ng-show="gameServerStarted">
-  <legend>Player Joined{{name}}</legend>
-    <div class="alert alert-success" role="alert">Server: {{gameServerName}} Pass: {{gameServerPass||'none'}}</div>
-      <ul>
-        <li ng-repeat="client in gameClients">
-          {{client.name}}
-        </li>
-      </ul>
-    </div>
-</fieldset>
+<div class="col-md-12" style="margin-top: 23px;">
+  <div class="alert alert-danger" role="alert">
+    <b>if you stop the server all users have to reload there pages</b>
+  </div>
+</div>

@@ -1,7 +1,7 @@
 //
-// # SimpleServer
+// # Last Man Standing Game for Kino+ @ rocketbeans.tv
 //
-// A simple chat server using Socket.IO, Express, and Async.
+// A simple game server using Socket.IO, Express, and Async.
 //
 
 
@@ -48,119 +48,172 @@ var sockets = {};
 var clientsConnected = {};
 var gamesRunning = {};
 
-
 io.on('connection', function (socket) {
     sockets[socket.id] = socket;
-    clientsConnected[socket.id] = socket;
-    updateRunningGames(socket.id);
+    socket.emit('connect',socket.id);
 
     socket.on('startServer',function(newServer){
       var toRun = {
         name: newServer.name,
-        pass: newServer.pass,
         ownerId: socket.id,
-        player: {}
+        player: newServer.user,
+        playerWon: '',
+        nameList: newServer.nameList,
+        maxCount: 20,
+        timer: 20,
+        plpos: 0,
+        intervalID: 0,
+        running: false,
+        search: 'Last Man Standing',
+        movies: [],
+        called: []
       };
       gamesRunning[newServer.name] = toRun;
-      delete clientsConnected[socket.id];
-      updateRunningGames( Object.keys(clientsConnected) );
+
       console.log("Start Server "+toRun.name);
+      console.dir(toRun.player);
+      broadcastComrade(newServer.name);
     });
 
     socket.on('joinServer',function(newPlayer){
-      if(gamesRunning[newPlayer.server]||false){
-        var newUser = {
-          name: newPlayer.name,
-          server: server,
-          score: 3,
-          userId: socket.id
-        };
-        gamesRunning[newPlayer.server].player[socket.id] = newUser;
-        delete clientsConnected[socket.id];
-        updateRunningGames( Object.keys(clientsConnected) );
-        var serverSocket = sockets[gamesRunning[newPlayer.server].ownerId];
-        serverSocket.emit('updatePlayer',newUser.name);
-        console.log("player "+newPlayer.name+" joined");
-      } else {
-        socket.emit('serverError',{msg:'join server',obj:newPlayer});
+      if(!gamesRunning[newPlayer.server]) {
+        return;
+      }
+      var ser = gamesRunning[newPlayer.server];
+      var hit = false;
+      for(var p in ser.player) {
+        console.log("player "+ser.player[p].name);
+        if(ser.player[p].name===newPlayer.name) {
+          hit = true;
+          ser.player[p].status = 'online';
+          ser.player[p].socketID = socket.id;
+          break;
+        }
+      }
+      if(hit) {
+        socket.emit("welcomPlayer",{name:newPlayer.name});
+        var serSocket = sockets[newPlayer.server];
+        serSocket.emit("updatePlayer",ser.player);
+        console.log("new Player: "+newPlayer.name);
+        broadcastComrade(newPlayer.server);
       }
     });
 
-    socket.on('seekRunningServer',function(){
-      updateRunningGames(socket.id);
+    socket.on('sendGameData',function(gameData){
+      if(!(gamesRunning[gameData.server]||false)) return;
+      var rG = gamesRunning[gameData.server];
+      rG.called = gameData.called;
+      rG.search = gameData.search;
+      broadcastComrade(gameData.server);
+    });
+
+    socket.on('gameServerAction',function(action){
+      if(!(gamesRunning[action.server]||false)) return;
+      gameLogic(action);
+      broadcastComrade(action.server);
     });
 
     socket.on('disconnect', function () {
       delete sockets[socket.id];
-      // sockets.splice(sockets.indexOf(socket), 1);
-      // updateRoster();
     });
 
-    socket.on('message', function (msg) {
-      var text = String(msg || '');
-
-      if (!text)
-        return;
-
-      socket.get('name', function (err, name) {
-        var data = {
-          name: name,
-          text: text
-        };
-
-        broadcast('message', data);
-        messages.push(data);
-      });
-    });
-
-    socket.on('identify', function (name) {
-      socket.set('name', String(name || 'Anonymous'), function (err) {
-        updateRoster();
-      });
-    });
   });
 
-function listOfPlayerInGame(gameName) {
-  var lop = []
-  for(var p in gamesRunning[gameName].player) {
-    var k = gamesRunning[gameName].player[p];
-    lop.push(k.name);
-  }
-  return lop;
-}
-
-function updateRunningGames(soIDs) {
-  if(typeof soIDs === "string") {
-    if(!(sockets[soIDs]||false)) {
-      console.log("faild update socket "+soIDs);
-      return;
-    }
-    console.dir(gamesRunning);
-    for(var name in gamesRunning) {
-      var rS = {
-        name: name,
-        player: listOfPlayerInGame(name)
+function gameLogic(action) {
+  if(!(gamesRunning[action.server]||false)) return;
+    var rS = gamesRunning[action.server];
+    console.log("send button "+action.item);
+    if(action.item==="play") {
+      rS.running = true;
+      rS.intervalID = setInterval(function(){gameTimer(action.server)},1000,action);
+    } else if(action.item==="pause") {
+      rS.running = !(rS.running);
+    } else if(action.item==="stop") {
+      clearInterval(rS.intervalID);
+      rS.running = false;
+    } else if(action.item==="next") {
+      if(rS.plpos>=rS.nameList.length-1) {
+        rS.plpos=0;
+      } else {
+        rS.plpos++;
       }
-      console.log("socketID "+soIDs);
-      sockets[soIDs].emit('runningGames', rS);
+      if(rS.nameList[rS.plpos].score<=0) {
+        gameLogic(action);
+      } else {
+        rS.timer=rS.maxCount;
+      }
+    } else if(action.item==="prev") {
+      if(rS.plpos<=0) {
+        rS.plpos = rS.nameList.length-1;
+      } else {
+        rS.plpos--;
+      }
+      if(rS.nameList[rS.plpos].score<=0) {
+        gameLogic(action);
+      } else {
+        rS.timer=rS.maxCount;
+      }
+    } else if(action.item==="lose") {
+      loseScore(action);
     }
-  } else if(typeof soIDs === "object" && (soIDs.length||false)) {
-    for(var s in soIDs) {
-      updateRunningGames(soIDs[s]);
-    }
-  }
 }
 
-function updateRoster() {
-  async.map(
-    sockets,
-    function (socket, callback) {
-      socket.get('name', callback);
-    },
-    function (err, names) {
-      broadcast('roster', names);
+function gameOver(action) {
+  var rS = gamesRunning[action.server];
+  for(l in rS.nameList) {
+    if(rS.nameList[l].score>=1) {
+      rS.playerWon = rS.nameList[l].name;
     }
-  );
+  }
+  action.item = "pause";
+  gameLogic(action);
+  broadcastComrade(action.server);
+}
+
+
+function loseScore(action) {
+  var rS = gamesRunning[action.server];
+  rS.nameList[rS.plpos].score--;
+  var tO = 0;
+  for(l in rS.nameList) {
+    tO += rS.nameList[l].score;
+  }
+  if(tO<=1) {gameOver(action);return;}
+  action.item = "next";
+  gameLogic(action);
+}
+
+function gameTimer(serverId) {
+  if(!(gamesRunning[serverId]||false) || gamesRunning[serverId].running === false) return;
+  var gR = gamesRunning[serverId];
+  if(gR.timer<=0) {
+    gR.timer=gR.maxCount;
+    loseScore({server:serverId});
+  } else {
+    gR.timer--;
+  }
+  broadcastComrade(serverId);
+}
+
+function broadcastComrade(gameId) {
+  if(!(gamesRunning[gameId]||false)) return;
+  var gR = gamesRunning[gameId];
+  var gameData = {
+    search: gR.search,
+    called: gR.called,
+    timer: gR.timer,
+    nameList: gR.nameList,
+    player: gR.nameList[gR.plpos].name,
+    WON: gR.playerWon
+  };
+  for(var c in gR.player) {
+    var soID = gR.player[c].socketID;
+    if(sockets[soID]||false) {
+      console.log("sendGameData ID "+soID);
+      sockets[soID].emit('getGameData',gameData);
+    }
+  }
+  sockets[gR.ownerId].emit('getGameData',gameData);
 }
 
 function broadcast(event, data) {
