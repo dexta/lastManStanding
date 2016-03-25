@@ -18,8 +18,8 @@ movieApp.controller('singleController', function($scope, $location, getMovieData
     headerShow: true,
     btnHamburger: false,
     searchBar: true,
-    playerBar: true,
-    serverBar: true    
+    playerBar: false,
+    serverBar: false    
   }
 
   console.log("options "+JSON.stringify($location.search()));
