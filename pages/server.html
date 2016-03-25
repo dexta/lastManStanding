@@ -1,4 +1,54 @@
-  <div class="row" ng-if="showSettingsRow" ng-include src="'partials/settingsRow.html'">
-    <!--  show the server start row for settings of a game
-          pretty simple and a long to do list -->
+<div class="row">
+  <div class="col-md-2 col-xs-4">
+    <button type="button" class="btn btn-default" ng-click="gameButton('play')">
+      <span class="glyphicon glyphicon-play" aria-hidden="true"></span>
+    </button>
+    <button type="button" class="btn btn-default" ng-click="gameButton('pause')">
+      <span class="glyphicon glyphicon-pause" aria-hidden="true"></span>
+    </button>
+    <button type="button" class="btn btn-default" ng-click="gameButton('stop')">
+      <span class="glyphicon glyphicon-stop" aria-hidden="true"></span>
+    </button>
+    <br>    
+    <button type="button" class="btn btn-default" ng-click="gameButton('prev')">
+      <span class="glyphicon glyphicon-fast-backward" aria-hidden="true"></span>
+    </button>
+    <button type="button" class="btn btn-default" ng-click="gameButton('next')">
+      <span class="glyphicon glyphicon-fast-forward" aria-hidden="true"></span>
+    </button>
+    <button type="button" class="btn btn-default" ng-click="gameButton('lose')">
+      <span class="glyphicon glyphicon-thumbs-down" aria-hidden="true"></span>
+    </button>
   </div>
+  <div class="col-md-2 col-xs-4">
+    <h1>{{gamePlayerTime}}</h1>
+
+
+  </div>
+    <div class="col-md-2 col-xs-4" ng-repeat="player in gamePlayerNameList">
+    
+    
+    <div class="panel panel-default" ng-if="gameActivPlayer != player.name">
+      <div class="panel-heading">{{player.name}}</div>
+      <div class="panel-body">
+        Score: {{player.score}}
+      </div>
+    </div>
+
+    <div class="panel panel-danger" ng-if="gameActivPlayer === player.name">
+      <div class="panel-heading">{{player.name}}</div>
+      <div class="panel-body">
+        Score: {{player.score}}
+      </div>
+    </div>
+
+  </div>
+</div>
+
+  <div class="row" ng-if="navShow('serverRow')" ng-include src="'partials/settingsRow.html'">
+
+  </div>
+
+  <div class="row" ng-hide="navShow('serverRow')" ng-include src="'partials/searchResulutRow.html'">
+
+  </div>  
