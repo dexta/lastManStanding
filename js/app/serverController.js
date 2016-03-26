@@ -59,7 +59,7 @@ movieApp.controller('serverController', function($scope, $location, $interval, g
 
   var php = $location.protocol()+"://"+$location.host();
   php += ($location.port())? ":"+$location.port() : "";
-  console.log("php "+php);
+  // no no thats means P-rotocol H-ost P-ort not PersonalHomepageProcessor
 
   var debPlayer = ["alice","bob","clara","dexter","elouise"];
 // new starts here
@@ -68,12 +68,11 @@ movieApp.controller('serverController', function($scope, $location, $interval, g
   $scope.gameServerName = 'test1';
 
   function mockPlayer() {
-    console.log("here we are "+$scope.gameServerName);
     for(var d in debPlayer) {
       var role = (Math.random()<=.3)? "viewer" : "player";
       var tu = {};
       tu.name = debPlayer[d];
-      tu.url = "http://localhost:9423/#/"+role+"?name="+debPlayer[d]+"&server="+$scope.gameServerName;
+      tu.url = php+"/#/"+role+"?name="+debPlayer[d]+"&server="+$scope.gameServerName;
       tu.status = 'offline';
       tu.role = role;
       tu.socketID = '';
@@ -84,10 +83,9 @@ movieApp.controller('serverController', function($scope, $location, $interval, g
 
   $scope.addPlayer = function(name) {
     if(!name||name==="") return;
-    console.log("add player name "+name);
     var tu = {};
     tu.name = name;
-    tu.url = "http://localhost:9423/#/player?name="+name+"&server="+$scope.gameServerName;
+    tu.url = php+"/#/player?name="+name+"&server="+$scope.gameServerName;
     tu.status = 'offline';
     tu.role = 'player';
     tu.socketID = '';
@@ -95,10 +93,9 @@ movieApp.controller('serverController', function($scope, $location, $interval, g
   };
 
   $scope.addViewer = function() {
-    console.log("add viewer");
     var tu = {};
     tu.name = "viewer";
-    tu.url = "http://localhost:9423/#/viewer?type=board&server="+$scope.gameServerName;
+    tu.url = php+"/#/viewer?type=board&server="+$scope.gameServerName;
     tu.status = 'offline';
     tu.role = 'viewer';
     tu.socketID = '';
@@ -170,7 +167,7 @@ movieApp.controller('serverController', function($scope, $location, $interval, g
   };
   
   socket.on('getGameData', function(gameData){
-    console.log("getGameData "+JSON.stringify(gameData));
+    // console.log("getGameData "+JSON.stringify(gameData));
     $scope.$apply(function(){
       $scope.searchTitle = gameData.search;
       $scope.calledMovies = gameData.called;
@@ -181,7 +178,6 @@ movieApp.controller('serverController', function($scope, $location, $interval, g
   });
 
   $scope.$watch('searchName()',function(){
-    console.log("watch "+$scope.searchName());
     $scope.sendGameData();
   });
 
@@ -217,7 +213,6 @@ movieApp.controller('serverController', function($scope, $location, $interval, g
   }
 
   $scope.gameButton = function(action) {
-    console.log("button action "+action);
     var gbAction = {server:$scope.gameServerName,item:action};    
     socket.emit('gameServerAction',gbAction);
   };
@@ -236,6 +231,5 @@ movieApp.controller('serverController', function($scope, $location, $interval, g
   socket.on("serverError", function(msgObj) {
     console.log("error from:"+msgObj.msg+"\nobj:"+JSON.stringify(msgObj.obj));
   });
-
   
 });
