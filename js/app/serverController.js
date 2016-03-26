@@ -57,6 +57,10 @@ movieApp.controller('serverController', function($scope, $location, $interval, g
 
   var socket = io.connect();
 
+  var php = $location.protocol()+"://"+$location.host();
+  php += ($location.port())? ":"+$location.port() : "";
+  console.log("php "+php);
+
   var debPlayer = ["alice","bob","clara","dexter","elouise"];
 // new starts here
   $scope.userList = [];
