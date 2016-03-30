@@ -176,7 +176,7 @@ function loseScore(action) {
   rS.nameList[rS.plpos].score--;
   var tO = 0;
   for(l in rS.nameList) {
-    tO += rS.nameList[l].score;
+    if(rS.nameList[l].score>=1) tO++;
   }
   if(tO<=1) {gameOver(action);return;}
   action.item = "next";
