@@ -8,8 +8,8 @@ movieApp.controller('viewerController', function($scope, $location, getMovieData
   
 // debug mockup
       $scope.searchTitle = "Bruce Willis";
-      $scope.gamePlayerName = "testPlayer 01";
-      $scope.gameServerName = "Server 23 Rack 42";
+      $scope.gameActivPlayer = "dexter";
+      $scope.gamePlayerNameList = [{name:'alice',score:3},{name:'bob',score:3},{name:'clara',score:1},{name:'dexter',score:0},{name:'elouise',score:3}]
       $scope.calledMovies = [
         {title:"Stirb Langsam"},
         {title:"Stirb Langsam 2"},
@@ -23,8 +23,11 @@ movieApp.controller('viewerController', function($scope, $location, getMovieData
   navView.set('searchBar',false);
   navView.set('playerBar',false);
   navView.set('serverBar',false);
+  navView.set('wonlose',true);
+  // navView.set('',false);
 
 
+  $scope.navShow = navView.show;
 // socket.io starts here
 
   var socket = io.connect();
@@ -39,7 +42,6 @@ movieApp.controller('viewerController', function($scope, $location, getMovieData
       server: playerPara.server
     };
     socket.emit('joinServer',newPlayer);
-    // console.log("new Player "+JSON.stringify(newPlayer) );
     serverConnect = true;
   });
 

@@ -1,0 +1,38 @@
+<div class="col-lg-12 col-md-12 col-xs-12">
+  <div class="alert alert-success text-center" role="alert">
+    <b> {{searchTitle}} </b>
+  </div>
+</div>
+</div>
+<div class="row">
+<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+<div class="panel panel-{{headColorActive}}">
+  <div class="panel-heading">
+    <div class="panel-title text-center">{{gamePlayerName}}</div>
+  </div>
+  <div class="panel-body bigNumber">
+      Score: {{gamePlayerScore}}
+  </div>
+</div>
+</div>
+<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <div class="panel-title text-center"> {{gameActivPlayer}}</div>
+    </div>        
+    <div class="panel-body bigNumber">
+        Time: {{gamePlayerTime}}
+    </div>
+  </div>
+</div>
+</div>
+<div class="row">
+<div class="col-lg-3 col-md-4 col-sm-4 col-xs-6" ng-repeat="movie in calledMovies">
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <div class="panel-title"> {{movie.title}}</div>
+    </div>
+    <div class="panel-body" style="display:none;">
+    </div>
+  </div>
+</div>

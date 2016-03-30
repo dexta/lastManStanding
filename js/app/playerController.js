@@ -26,6 +26,10 @@ movieApp.controller('playerController', function($scope, $location, getMovieData
   navView.set('searchBar',false);
   navView.set('playerBar',false);
   navView.set('serverBar',false);
+  navView.set('wonloseRow',true);
+  navView.set('gameCardRow',false);
+
+  $scope.navShow = navView.show;
 
   $scope.sortValues = [
     {id: 'title-asc', name: 'Titel A -> Z'},
