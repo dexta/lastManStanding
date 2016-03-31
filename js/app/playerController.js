@@ -7,11 +7,12 @@ movieApp.controller('playerController', function($scope, $location, getMovieData
   $scope.gameActivPlayer = "some other";
   $scope.gamePlayerScore = 3;
   $scope.headColorActive = "danger";
+  $scope.gamePlayerWonGame = '';
 
 // debug mockup
       $scope.searchTitle = "Bruce Willis";
       $scope.gamePlayerName = "testPlayer 01";
-      $scope.gameServerName = "Server 23 Rack 42";
+      $scope.gamePlayerWonGame = 'WinnerNameHere';
       $scope.calledMovies = [
         {title:"Stirb Langsam"},
         {title:"Stirb Langsam 2"},
@@ -26,8 +27,8 @@ movieApp.controller('playerController', function($scope, $location, getMovieData
   navView.set('searchBar',false);
   navView.set('playerBar',false);
   navView.set('serverBar',false);
-  navView.set('wonloseRow',true);
-  navView.set('gameCardRow',false);
+  navView.set('wonloseRow',false);
+  navView.set('gameCardRow',true);
 
   $scope.navShow = navView.show;
 
@@ -59,12 +60,6 @@ movieApp.controller('playerController', function($scope, $location, getMovieData
 
   console.log("options "+JSON.stringify($location.search()));
 
-
-  // var debPlayer = ["alice","bob","clara","dexter","elouise"];
-
-  // $scope.gamePlayerName = playerPara.name;
-  // $scope.gameServerName = playerPara.server;
-
 // start connection
   socket.on('connect', function () {
     if(serverConnect) return;
@@ -93,6 +88,11 @@ movieApp.controller('playerController', function($scope, $location, getMovieData
       $scope.gamePlayerTime = gameData.timer;
       $scope.gameActivPlayer = gameData.player;
       $scope.gamePlayerNameList = gameData.nameList;
+      if(gameData.WON!=="") {
+        navView.set('wonloseRow',true);
+        navView.set('gameCardRow',false);
+        $scope.gamePlayerWonGame = gameData.WON;
+      }
     });
   });
 

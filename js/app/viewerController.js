@@ -5,10 +5,11 @@ movieApp.controller('viewerController', function($scope, $location, getMovieData
   $scope.gamePlayerTime = 13;
   $scope.gamePlayerNameList = [];
   $scope.gameActivPlayer = "";
-  
+  $scope.gamePlayerWonGame = '';
 // debug mockup
       $scope.searchTitle = "Bruce Willis";
       $scope.gameActivPlayer = "dexter";
+      $scope.gamePlayerWonGame = 'WinnerNameHere';
       $scope.gamePlayerNameList = [{name:'alice',score:3},{name:'bob',score:3},{name:'clara',score:1},{name:'dexter',score:0},{name:'elouise',score:3}]
       $scope.calledMovies = [
         {title:"Stirb Langsam"},
@@ -23,7 +24,7 @@ movieApp.controller('viewerController', function($scope, $location, getMovieData
   navView.set('searchBar',false);
   navView.set('playerBar',false);
   navView.set('serverBar',false);
-  navView.set('wonlose',true);
+  navView.set('wonloseRow',false);
   // navView.set('',false);
 
 
@@ -57,6 +58,10 @@ movieApp.controller('viewerController', function($scope, $location, getMovieData
       $scope.gamePlayerTime = gameData.timer;
       $scope.gameActivPlayer = gameData.player;
       $scope.gamePlayerNameList = gameData.nameList;
+      if(gameData.WON!=="") {
+        navView.set('wonloseRow',true);
+        $scope.gamePlayerWonGame = gameData.WON;
+      }
     });
   });
 
