@@ -92,15 +92,21 @@ movieApp.controller('serverController', function($scope, $location, $interval, g
     $scope.userList.push(tu);
   };
 
-  $scope.addViewer = function() {
+  $scope.addViewer = function(name) {
     var tu = {};
-    tu.name = "viewer";
+    tu.name = name;
     tu.url = php+"/#/viewer?type=board&server="+$scope.gameServerName;
     tu.status = 'offline';
     tu.role = 'viewer';
     tu.socketID = '';
     $scope.userList.push(tu);
-  }
+  };
+
+  $scope.removeEntry = function(index) {
+    console.log("index "+JSON.stringify( $scope.userList[index] ));
+    $scope.userList.splice(index,1);
+  };
+
 
   $scope.startServer = function() {
     if($scope.gameServerStarted) return;
@@ -112,12 +118,12 @@ movieApp.controller('serverController', function($scope, $location, $interval, g
     console.log("###### starting server "+$scope.gameServerName);
     socket.emit('startServer',iData);
     $scope.gameServerStarted = true;
-  }
+  };
 
   $scope.stopServer = function() {
     console.log("****** stop server "+$scope.gameServerName);
     $scope.gameServerStarted = false;
-  }
+  };
   socket.on('connect', function (socketID) {
     if(!socketID||socketID==="") return;
     console.log("connect "+socketID);
@@ -198,7 +204,7 @@ movieApp.controller('serverController', function($scope, $location, $interval, g
         $scope.gamePlayerTime--;
       }
     }  
-  }
+  };
 
   function gameTimer(action) {
     if(!action||true) {

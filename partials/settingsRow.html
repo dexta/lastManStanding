@@ -39,26 +39,25 @@
           </button>           
         </td>
         <td>
-          <button type="button" class="btn btn-danger">
+          <button type="button" class="btn btn-danger" ng-click="removeEntry($index)">
             <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
           </button>          
         </td>
       </tr>
     </tbody>
   </table>
-  <div class="col-md-3 col-sm-6">
+  <div class="col-md-3 col-sm-10">
     <button type="button" class="btn btn-warning pull-left" ng-hide="gameServerStarted" ng-click="startServer()">Start Server</button>
     <button type="button" class="btn btn-danger pull-left" ng-show="gameServerStarted" ng-click="stopServer()">Stop Server</button>
   </div>
-  <div class="col-md-3 col-sm-6">
-    <button type="button" class="btn btn-info pull-right" ng-click="addViewer()">add Viewer</button>
-  </div>
-  <div class="col-md-3 col-sm-6 pull-right">
+
+  <div class="col-md-6 col-sm-10 pull-right">
     <div class="input-group">
       <input type="text" class="form-control" placeholder="name" ng-model="newPlayerName">
-      <span class="input-group-btn">
+      <div class="input-group-btn">
         <button type="button" class="btn btn-success" ng-click="addPlayer(newPlayerName);newPlayerName='';">add Player</button>
-      </span>
+        <button type="button" class="btn btn-info" ng-click="addViewer(newPlayerName);newPlayerName='';">add Viewer</button>
+      </div>
     </div>
   </div>  
 </div>
