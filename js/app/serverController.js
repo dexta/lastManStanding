@@ -34,6 +34,7 @@ movieApp.controller('serverController', function($scope, $location, $interval, g
   navView.set('playerBar',false);
   navView.set('serverBar',true);
   navView.set('serverRow',true);
+  navView.set('serverRunning',false);
 
   $scope.navShow = navView.show;
 
@@ -118,6 +119,9 @@ movieApp.controller('serverController', function($scope, $location, $interval, g
     console.log("###### starting server "+$scope.gameServerName);
     socket.emit('startServer',iData);
     $scope.gameServerStarted = true;
+    navView.set('serverRunning',true);
+    navView.set('serverRow',false);
+
   };
 
   $scope.stopServer = function() {
