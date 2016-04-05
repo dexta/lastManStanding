@@ -12,7 +12,7 @@ tmdb.prototype.get = function(req,res,name,Cache) {
   async.series([
     function(callback) {
       client.get('http://api.themoviedb.org/3/search/person?api_key='+config.moviedb.tmdbApiKey+'&query='+name, function(data, response){ 
-        liId = data.results[0].id;
+        liId = (data.results[0]||false)? data.results[0].id : 488;
         callback();
       });
     },
